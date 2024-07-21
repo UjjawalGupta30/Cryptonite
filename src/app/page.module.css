@@ -1,0 +1,15 @@
+.tables {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 4rem auto;
+  max-width: 1200px; /* Adjust the value based on your UI */
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .tables {
+    flex-wrap: nowrap;
+  }
+}
