@@ -1,27 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    "x-cg-demo-api-key": process.env.API_KEY || "",
-  },
-};
-
-const fetchCompanyHoldings = async (coin: string) => {
-  const response = await fetch(
-    `https://api.coingecko.com/api/v3/companies/public_treasury/${coin}`,
-    options
-  );
-  if (!response.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await response.json();
-  return data.companies.map((company: any) => ({ ...company, coin }));
-};
+import pubSub from "@/lib/pubsub";
+import { startLiveUpdates } from "@/lib/serverMock";
+import { cn } from "@/lib/utils";
 
 export const Ticker = ({
   direction = "left",
@@ -39,24 +21,17 @@ export const Ticker = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
-  const updateHoldings = async () => {
-    try {
-      const [btcHoldings, ethHoldings] = await Promise.all([
-        fetchCompanyHoldings("bitcoin"),
-        fetchCompanyHoldings("ethereum"),
-      ]);
-
-      const combinedHoldings = [...ethHoldings, ...btcHoldings];
-      setHoldings(combinedHoldings);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    updateHoldings();
-    const intervalId = setInterval(updateHoldings, 60000); // Refetch every 60 seconds
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    const handleHoldingsUpdate = (data: any[]) => {
+      setHoldings(data);
+    };
+
+    pubSub.subscribe("holdingsUpdate", handleHoldingsUpdate);
+    startLiveUpdates();
+
+    return () => {
+      pubSub.unsubscribe("holdingsUpdate", handleHoldingsUpdate);
+    };
   }, []);
 
   useEffect(() => {

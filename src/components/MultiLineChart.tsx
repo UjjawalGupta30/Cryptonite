@@ -137,7 +137,7 @@ export function GlobalMarketCapChart() {
         {loading ? (
           <div className="flex flex-col text-center justify-center items-center ">
             <Loader2 size={20} className="animate-spin" />
-            <p>Chart is getting loaded</p>
+            <p>Loading...</p>
           </div>
         ) : (
           <ChartContainer

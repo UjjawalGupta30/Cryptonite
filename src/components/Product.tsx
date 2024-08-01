@@ -84,7 +84,42 @@ export function Product({ coin_id }: { coin_id: string }) {
   }, [coin_id, timeRange]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Card className="bg-transparent">
+        <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+          <div className="grid flex-1 gap-1 text-center sm:text-left">
+            <CardTitle>{`Price Chart for ${coin_id}`}</CardTitle>
+            <CardDescription>
+              Historical price data for {coin_id} over the selected time period.
+            </CardDescription>
+          </div>
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger
+              className="w-[160px] rounded-lg sm:ml-auto"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Last 3 months" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="90" className="rounded-lg">
+                Last 3 months
+              </SelectItem>
+              <SelectItem value="30" className="rounded-lg">
+                Last 30 days
+              </SelectItem>
+              <SelectItem value="7" className="rounded-lg">
+                Last 7 days
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </CardHeader>
+        <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+          <div className="h-[250px] w-full flex items-center justify-center">
+            Loading...
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   // Format X-axis labels based on the selected time range

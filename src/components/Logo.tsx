@@ -4,15 +4,15 @@ import { SVGProps } from "react";
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={24} // Increase the width to make the icon bigger
-    height={24} // Increase the height to make the icon bigger
+    width={24}
+    height={24}
     fill="none"
     stroke="#FFF"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
     className="icon icon-tabler icons-tabler-outline icon-tabler-currency"
-    transform={`scale(1.5)`} // Scale the content by a factor of 2
+    transform={`scale(1.5)`}
     {...props}
   >
     <path d="M0 0h24v24H0z" stroke="none" />
